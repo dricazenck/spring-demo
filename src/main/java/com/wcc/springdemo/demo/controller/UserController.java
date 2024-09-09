@@ -13,6 +13,11 @@ public class UserController {
 
     private final List<User> users = new ArrayList<>();
 
+    public UserController() {
+        users.add(new User("1", "adriana", "Adriana", "Zencke", "Adriana Zencke"));
+        users.add(new User("2", "sonali", "Sonali", "Goel", "Sonali Goel"));
+    }
+
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return users;
