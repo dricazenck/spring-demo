@@ -8,27 +8,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 public class UserController {
 
     private final List<User> users = new ArrayList<>();
 
-    @GetMapping
+    @GetMapping("/users")
     public List<User> getAllUsers() {
         return users;
     }
 
-    @PostMapping
+    @PostMapping("/user")
     public User createUser(@RequestBody User user) {
         users.add(user);
 
         return user;
     }
 
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable String id) {
+        return users.stream().filter(user -> user.username().equalsIgnoreCase(id)).findFirst().orElse(null);
+    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
-        return users.stream().filter(user -> user.id().equalsIgnoreCase(id))
+    @GetMapping("/user/{username}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String username) {
+        return users.stream().filter(user -> user.username().equalsIgnoreCase(username))
                 .findFirst().map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
 
