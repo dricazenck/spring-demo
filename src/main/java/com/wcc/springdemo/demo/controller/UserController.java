@@ -1,6 +1,7 @@
 package com.wcc.springdemo.demo.controller;
 
 import com.wcc.springdemo.demo.domain.User;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,8 @@ public class UserController {
     private final List<User> users = new ArrayList<>();
 
     public UserController() {
-        users.add(new User("1", "adriana", "Adriana", "Zencke", "Adriana Zencke"));
-        users.add(new User("2", "sonali", "Sonali", "Goel", "Sonali Goel"));
+        users.add(new User("1", "adriana", "Adriana", "Zencke", "Adriana Zencke", "adriana@email.com"));
+        users.add(new User("2", "sonali", "Sonali", "Goel", "Sonali Goel", "sonali@email.com"));
     }
 
     @GetMapping("/users")
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         users.add(user);
 
         return user;
