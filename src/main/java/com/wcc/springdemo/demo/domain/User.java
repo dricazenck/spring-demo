@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public record User(
         @JsonProperty("userId")
         String id,
-        @NotNull
+        @NotBlank(message = "Username is required")
         String username,
+        @NotBlank(message = "First name is required")
         String firstName,
+        @NotBlank(message = "Lastname is required")
         String lastName,
         @JsonIgnore String fullName,
         @Email(message = "Invalid email format")
