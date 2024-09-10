@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -35,20 +37,20 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/user")
                         .content(objectMapper.writeValueAsString(new User("3", "username", "FirstName", "LastName", "FirstName LastName", "username@email.com")))  // Sending the new user name in the body
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         // Verify that the new user is added to the list via GET request
         mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$.[2].username", is("username")));;
-      }
+                .andExpect(jsonPath("$.[2].username", is("username")));
+    }
 
     @Test
     void getUserById() {
-      }
+    }
 
     @Test
     void getUserByUserName() {
-      }
+    }
 }
