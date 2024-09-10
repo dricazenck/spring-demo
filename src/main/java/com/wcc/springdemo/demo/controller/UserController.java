@@ -36,8 +36,8 @@ public class UserController {
         return users.stream().filter(user -> user.username().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
 
-    @GetMapping("/user/{username}")
-    public ResponseEntity<User> getUserByUserName(@PathVariable String username) {
+    @GetMapping("/user")
+    public ResponseEntity<User> getUserByUserName(@RequestParam String username) {
         return users.stream().filter(user -> user.username().equalsIgnoreCase(username))
                 .findFirst().map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
