@@ -44,11 +44,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.[2].username", is("username")));;
       }
 
-    @Test
-    void getUserById() {
-      }
 
     @Test
-    void getUserByUserName() {
+    void testGetUserByUserNameOk() {
       }
 }
