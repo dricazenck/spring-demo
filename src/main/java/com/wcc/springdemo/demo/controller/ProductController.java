@@ -29,7 +29,7 @@ public class ProductController {
     @GetMapping
     @Operation(summary = "API to retrieve all products")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Product>> getAllUsers() {
+    public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(service.getAllProducts());
     }
 

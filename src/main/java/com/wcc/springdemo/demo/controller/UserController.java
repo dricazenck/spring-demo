@@ -31,13 +31,13 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable String id) {
+    @GetMapping("/user")
+    public User getUserById(@RequestParam String id) {
         return users.stream().filter(user -> user.username().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
 
-    @GetMapping("/user/{username}")
-    public ResponseEntity<User> getUserByUserName(@PathVariable String username) {
+    @GetMapping("/user/by")
+    public ResponseEntity<User> getUserByUserName(@RequestParam String username) {
         return users.stream().filter(user -> user.username().equalsIgnoreCase(username))
                 .findFirst().map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
