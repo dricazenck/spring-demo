@@ -5,11 +5,13 @@ import com.wcc.springdemo.demo.domain.User;
 import com.wcc.springdemo.demo.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -17,8 +19,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -45,18 +46,24 @@ class UserControllerTest {
 
     @Test
     void testCreateUserOk() throws Exception {
+        var user = new User("2", "username_2", "FirstName_2", "LastName_2", "FirstName_2 LastName_2", "username_2@mail.com");
+
+        when(userService.addUser(user)).thenReturn(user);
+
         mockMvc.perform(post("/api/v1/user")
-                        .content(objectMapper.writeValueAsString(new User("3", "username", "FirstName", "LastName", "FirstName LastName", "username@email.com")))  // Sending the new user name in the body
+                        .content(objectMapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
-
-        // Verify that the new user is added to the list via GET request
-        mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$.[2].username", is("username")));;
-      }
+                .andExpect(content().json(userAsString(user)));
+        }
 
+    private String userAsString(final User user) {
+        try {
+            return objectMapper.writeValueAsString(user);
+        } catch (IOException e) {
+            return User.class.toString();
+        }
+    }
 
     @Test
     void testGetUserByUserNameOk() {
