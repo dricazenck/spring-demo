@@ -62,7 +62,7 @@ class ProductControllerTest {
 
         mockMvc.perform(post("/api/v1/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newProduct)))  // Converts object to JSON
+                        .content(objectMapper.writeValueAsString(newProduct)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "http://localhost/api/v1/product/1"))
                 .andExpect(content().json(objectMapper.writeValueAsString(newProduct)));
