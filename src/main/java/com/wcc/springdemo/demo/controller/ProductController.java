@@ -76,7 +76,7 @@ public class ProductController {
         return ResponseEntity.ok(service.getProductById(id));
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/by/{name}")
     @Operation(summary = "API to retrieve information about product by name")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> getUserByUserName(@PathVariable String name) {
