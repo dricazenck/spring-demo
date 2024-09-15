@@ -2,6 +2,14 @@ spring:
   application:
     name: demo
 
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+  paths-to-match: /api/v1/**, /actuator/**
 
 management:
   endpoint:
@@ -12,12 +20,3 @@ management:
     web:
       exposure:
         include: "health,info,metrics,env,loggers"
-
-springdoc:
-  show-actuator: true
-  api-docs:
-    enabled: true
-    path: /api-docs
-  swagger-ui:
-    enabled: true
-  paths-to-match: /api/v1/**
