@@ -24,3 +24,7 @@
 
 * [Access swagger api](http://localhost:8080/swagger-ui/index.html) and
   corresponding [openAPI docs here](http://localhost:8080/api-docs)
+
+## Actuator Endpoints
+
+http://localhost:8080/actuator
