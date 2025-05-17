@@ -4,6 +4,7 @@ import com.wcc.springdemo.demo.domain.Product;
 import com.wcc.springdemo.demo.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
+@Tag(name = "APIs for Products")
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
