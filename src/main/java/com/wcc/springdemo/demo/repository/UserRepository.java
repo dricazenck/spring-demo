@@ -6,12 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    
-    /**
-     * Find a user by username (case-insensitive)
-     * 
-     * @param username the username
-     * @return the user if found, or null if not found
-     */
-    User findByUsernameIgnoreCase(String username);
+
+  /**
+   * Find a user by username (case-insensitive)
+   *
+   * @param username the username
+   * @return the user if found, or null if not found
+   */
+  User findByUsernameIgnoreCase(String username);
 }
