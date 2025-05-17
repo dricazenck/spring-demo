@@ -38,8 +38,8 @@ class UserServiceTest {
 
     // Should have the two default users
     assertEquals(2, users.size());
-    assertTrue(users.stream().anyMatch(u -> u.username().equals("adriana")));
-    assertTrue(users.stream().anyMatch(u -> u.username().equals("sonali")));
+    assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("adriana")));
+    assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("sonali")));
   }
 
   @Test
@@ -47,8 +47,8 @@ class UserServiceTest {
     User addedUser = userService.addUser(testUser);
 
     assertNotNull(addedUser);
-    assertEquals("test-id", addedUser.id());
-    assertEquals("testuser", addedUser.username());
+    assertEquals("test-id", addedUser.getId());
+    assertEquals("testuser", addedUser.getUsername());
 
     // Verify it's in the repository
     assertTrue(userRepository.findById("test-id").isPresent());
@@ -67,7 +67,7 @@ class UserServiceTest {
 
     // Should have at least our test user
     assertFalse(users.isEmpty());
-    assertTrue(users.stream().anyMatch(u -> u.id().equals("test-id")));
+    assertTrue(users.stream().anyMatch(u -> u.getId().equals("test-id")));
 
     // Verify the count is at least 1 (our test user)
     assertTrue(!users.isEmpty());
@@ -80,7 +80,7 @@ class UserServiceTest {
     User foundUser = userService.getUserById("test-id");
 
     assertNotNull(foundUser);
-    assertEquals("testuser", foundUser.username());
+    assertEquals("testuser", foundUser.getUsername());
   }
 
   @Test
@@ -97,7 +97,7 @@ class UserServiceTest {
     User foundUser = userService.getUserByUsername("testuser");
 
     assertNotNull(foundUser);
-    assertEquals("test-id", foundUser.id());
+    assertEquals("test-id", foundUser.getId());
   }
 
   @Test

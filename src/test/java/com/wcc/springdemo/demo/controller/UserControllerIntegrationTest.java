@@ -35,7 +35,7 @@ public class UserControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.email").value("Email is required"));
+        .andExpect(jsonPath("$.email").value("Invalid email format"));
   }
 
   @Test
@@ -77,10 +77,10 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  void testGetUserByIdentifier() {
-    var response = controller.getUserByIdentifier("1");
+  void testGetUserByUserName() {
+    var response = controller.getUserByUsername("Adriana");
     assertEquals(200, response.getStatusCode().value());
     Assertions.assertNotNull(response.getBody());
-    assertEquals("Adriana", response.getBody().firstName());
+    assertEquals("Adriana", response.getBody().getFirstName());
   }
 }
