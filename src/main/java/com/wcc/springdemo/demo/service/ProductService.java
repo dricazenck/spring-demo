@@ -48,12 +48,11 @@ public class ProductService {
         return product;
     }
 
-    public Product getProductById(@PathVariable String id) {
+    public Product getProductById( String id) {
         return products.stream().filter(user -> user.id().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
 
-    @GetMapping("/{name}")
-    public Product getProductByName(@PathVariable String name) {
+    public Product getProductByName( String name) {
         return products.stream().filter(user -> user.name().equalsIgnoreCase(name))
                 .findFirst()
                 .orElseThrow(() -> new ProductNotFoundException(name));
