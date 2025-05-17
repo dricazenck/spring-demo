@@ -1,6 +1,17 @@
 spring:
   application:
     name: demo
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,env,loggers"
+
   datasource:
     url: jdbc:postgresql://localhost:5432/springdemo
     username: postgres
@@ -24,12 +35,4 @@ springdoc:
     enabled: true
   paths-to-match: /api/v1/**, /actuator/**
 
-management:
-  endpoint:
-    health:
-      show-details: always
 
-  endpoints:
-    web:
-      exposure:
-        include: "health,info,metrics,env,loggers"
