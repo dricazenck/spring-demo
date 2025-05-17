@@ -48,7 +48,7 @@ class UserControllerTest {
         .perform(get("/api/v1/users"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$.[0].username", is("username_1")));
+        .andExpect(jsonPath("$.[0].userId", is("1")));
   }
 
   @Test
@@ -64,13 +64,22 @@ class UserControllerTest {
 
     when(userService.addUser(user)).thenReturn(user);
 
+    // Create a JSON string with all required fields
+    String userJson = "{" +
+        "\"userId\":\"2\"," +
+        "\"username\":\"username_2\"," +
+        "\"firstName\":\"FirstName_2\"," +
+        "\"lastName\":\"LastName_2\"," +
+        "\"email\":\"username_2@mail.com\"" +
+        "}";
+
     mockMvc
         .perform(
             post("/api/v1/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-        .andExpect(status().isOk());
-    // .andExpect(content().json(userAsString(user)));
+                .content(userJson))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.userId", is("2")));
   }
 
   private String userAsString(final User user) {
@@ -105,6 +114,6 @@ class UserControllerTest {
     mockMvc
         .perform(get("/api/v1/user/username_1"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.username", is("username_1")));
+        .andExpect(jsonPath("$.userId", is("1")));
   }
 }

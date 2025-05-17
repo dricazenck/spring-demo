@@ -3,59 +3,54 @@ package com.wcc.springdemo.demo.service;
 import com.wcc.springdemo.demo.domain.Product;
 import com.wcc.springdemo.demo.exception.ProductIdDuplicatedException;
 import com.wcc.springdemo.demo.exception.ProductNotFoundException;
-import java.util.ArrayList;
+import com.wcc.springdemo.demo.repository.ProductRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-  private final List<Product> products = new ArrayList<>();
+  private final ProductRepository productRepository;
+
+  public ProductService(ProductRepository productRepository) {
+    this.productRepository = productRepository;
+  }
 
   public List<Product> getAllProducts() {
-    return products;
+    return productRepository.findAll();
   }
 
   public Product createProduct(Product product) {
-
-    if (getProductById(product.id()) != null) {
+    if (productRepository.existsById(product.id())) {
       throw new ProductIdDuplicatedException(product.id());
     }
 
-    products.add(product);
-
-    return product;
+    return productRepository.save(product);
   }
 
   public Boolean deleteProduct(String id) {
-    Product product = getProductById(id);
-    if (product != null) {
-      return products.remove(product);
+    if (productRepository.existsById(id)) {
+      productRepository.deleteById(id);
+      return true;
     }
 
     return false;
   }
 
   public Product updateProduct(Product product) {
-    if (getProductById(product.id()) == null) {
+    if (!productRepository.existsById(product.id())) {
       throw new ProductNotFoundException(product.id());
     }
 
-    products.add(product);
-
-    return product;
+    return productRepository.save(product);
   }
 
   public Product getProductById(String id) {
-    return products.stream()
-        .filter(user -> user.id().equalsIgnoreCase(id))
-        .findFirst()
-        .orElse(null);
+    return productRepository.findById(id).orElse(null);
   }
 
   public Product getProductByName(String name) {
-    return products.stream()
-        .filter(user -> user.name().equalsIgnoreCase(name))
-        .findFirst()
+    return productRepository.findByNameIgnoreCase(name)
         .orElseThrow(() -> new ProductNotFoundException(name));
   }
 }

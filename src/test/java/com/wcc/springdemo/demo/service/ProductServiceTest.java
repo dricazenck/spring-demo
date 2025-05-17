@@ -5,18 +5,29 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.wcc.springdemo.demo.domain.Product;
 import com.wcc.springdemo.demo.exception.ProductIdDuplicatedException;
 import com.wcc.springdemo.demo.exception.ProductNotFoundException;
+import com.wcc.springdemo.demo.repository.ProductRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+@SpringBootTest
+@Transactional
 class ProductServiceTest {
 
   private final Product product = new Product("1", "Product1", "description1");
+
+  @Autowired
   private ProductService productService;
+
+  @Autowired
+  private ProductRepository productRepository;
 
   @BeforeEach
   void setUp() {
-    productService = new ProductService();
+    productRepository.deleteAll();
   }
 
   @Test
