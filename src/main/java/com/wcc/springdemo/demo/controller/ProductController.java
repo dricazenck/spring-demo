@@ -33,6 +33,14 @@ public class ProductController {
         return ResponseEntity.ok(service.getAllProducts());
     }
 
+
+    @GetMapping("/{id}")
+    @Operation(summary = "API to retrieve information about product by id")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+        return ResponseEntity.ok(service.getProductById(id));
+    }
+
     @PostMapping
     @Operation(summary = "API to create product")
     @ResponseStatus(HttpStatus.CREATED)
@@ -67,13 +75,6 @@ public class ProductController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping("/{id}")
-    @Operation(summary = "API to retrieve information about product by id")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
-        return ResponseEntity.ok(service.getProductById(id));
     }
 
     @GetMapping("/by/{name}")
