@@ -21,7 +21,10 @@ public class User {
   private String id;
 
   @NotBlank(message = "Username is required")
-  @Schema(description = "Username for login", required = true, example = "johndoe")
+  @Schema(
+      description = "Username for login",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      example = "mary.jane")
   private String username;
 
   @NotBlank(message = "First name is required")

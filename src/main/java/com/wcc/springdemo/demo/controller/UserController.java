@@ -4,10 +4,10 @@ import com.wcc.springdemo.demo.domain.User;
 import com.wcc.springdemo.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,7 +30,7 @@ public class UserController {
 
   @PostMapping("/user")
   @Operation(summary = "API to create user")
-  public User createUser(@Valid @RequestBody User user) {
+  public User createUser(@Validated @RequestBody User user) {
     return service.addUser(user);
   }
 

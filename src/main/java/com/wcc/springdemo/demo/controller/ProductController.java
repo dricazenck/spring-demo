@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -55,12 +56,8 @@ public class ProductController {
   }
 
   @PutMapping("/{id}")
-  @Operation(summary = "API to update product")
-  @ApiResponse(responseCode = "200", description = "Product updated")
-  @ApiResponse(responseCode = "404", description = "Product not found")
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<Product> updateProduct(
-      @PathVariable String id, @RequestBody Product product) {
+      @Validated @PathVariable String id, @RequestBody Product product) {
     return ResponseEntity.ok(
         service.updateProduct(new Product(id, product.name(), product.description())));
   }
