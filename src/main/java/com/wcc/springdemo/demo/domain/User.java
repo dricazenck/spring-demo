@@ -26,8 +26,8 @@ import java.util.Set;
 public class User {
 
   public enum Role {
-    ROLE_USER,
-    ROLE_ADMIN
+    USER,
+    ADMIN
   }
 
   @Id
@@ -99,7 +99,7 @@ public class User {
     this.lastName = lastName;
     this.fullName = fullName;
     this.email = email;
-    this.roles.add(Role.ROLE_USER); // Default role
+    this.roles.add(Role.USER); // Default role
   }
 
   public User(
@@ -117,7 +117,7 @@ public class User {
     this.fullName = fullName;
     this.email = email;
     this.password = password;
-    this.roles.add(Role.ROLE_USER); // Default role
+    this.roles.add(Role.USER); // Default role
   }
 
   @JsonProperty("userId")

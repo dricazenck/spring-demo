@@ -19,7 +19,7 @@ public class ProductControllerIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    setAuthentication(new TestingAuthenticationToken("user", "password", "ROLE_USER"));
+    setAuthentication(new TestingAuthenticationToken("user", "password", "USER"));
   }
 
   @Test

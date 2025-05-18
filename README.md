@@ -92,7 +92,7 @@ curl -X 'POST' \
   "email": "email@example.com",
   "password": "admin",
   "roles": [
-    "ROLE_ADMIN"
+    "ADMIN"
   ],
   "userId": "7"
 }'
@@ -116,7 +116,7 @@ Response:
 ```shell
 {
   "roles": [
-    "ROLE_ADMIN"
+    "ADMIN"
   ],
   "token": "eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6InRlc3QiLCJpYXQiOjE3NDc1NjE1MDYsImV4cCI6MTc0NzY0NzkwNn0.VzTEfqkvPwo59p9On4-ayTL3f8GSX19WYUCv32J4CnSkujyI3clW6dTBrlgfVdlO-vTdSUWxkpYyzPYvcgIx6Q",
   "username": "test"

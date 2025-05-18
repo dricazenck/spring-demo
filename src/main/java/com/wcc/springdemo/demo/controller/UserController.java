@@ -25,14 +25,14 @@ public class UserController {
 
   @GetMapping("/users")
   @Operation(summary = "API to retrieve all users")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("isAuthenticated()")
   public List<User> getAllUsers() {
     return service.getAll();
   }
 
   @PostMapping("/user")
   @Operation(summary = "API to create user")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public User createUser(@Validated @RequestBody User user) {
     return service.addUser(user);
   }

@@ -46,7 +46,7 @@ public class ProductController {
   @PostMapping
   @Operation(summary = "API to create product")
   @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Product> createProduct(@RequestBody Product product) {
     var productSaved = service.createProduct(product);
 
@@ -60,7 +60,7 @@ public class ProductController {
   }
 
   @PutMapping("/{id}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Product> updateProduct(
       @Validated @PathVariable String id, @RequestBody Product product) {
     return ResponseEntity.ok(
@@ -72,7 +72,7 @@ public class ProductController {
   @ApiResponse(responseCode = "200", description = "Product updated")
   @ApiResponse(responseCode = "404", description = "Product not found")
   @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Product> patchProduct(
       @PathVariable String id, @RequestBody Product product) {
     return ResponseEntity.ok(
@@ -81,7 +81,7 @@ public class ProductController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "API to delete product")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
     boolean isDeleted = service.deleteProduct(id);
 

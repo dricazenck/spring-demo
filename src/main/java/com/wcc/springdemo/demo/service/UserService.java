@@ -35,7 +35,7 @@ public class UserService {
               "Adriana Zencke",
               "adriana@email.com",
               passwordEncoder.encode("admin"));
-      admin.addRole(Role.ROLE_ADMIN);
+      admin.addRole(Role.ADMIN);
       userRepository.save(admin);
 
       User user =
@@ -82,9 +82,9 @@ public class UserService {
     // Encode password
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-    // Ensure user has at least ROLE_USER
+    // Ensure user has at least USER
     if (user.getRoles() == null || user.getRoles().isEmpty()) {
-      user.addRole(Role.ROLE_USER);
+      user.addRole(Role.USER);
     }
 
     return userRepository.save(user);

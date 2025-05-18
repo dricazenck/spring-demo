@@ -29,7 +29,7 @@ public class UserControllerIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    setAuthentication(new TestingAuthenticationToken("user", "password", "ROLE_ADMIN"));
+    setAuthentication(new TestingAuthenticationToken("user", "password", "ADMIN"));
   }
 
   @Test
