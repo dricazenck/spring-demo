@@ -3,17 +3,20 @@ package com.wcc.springdemo.demo.controller;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.security.test.context.TestSecurityContextHolder.setAuthentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcc.springdemo.demo.domain.User;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -23,6 +26,11 @@ public class UserControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
   @Autowired private UserController controller;
+
+  @BeforeEach
+  void setUp() {
+    setAuthentication(new TestingAuthenticationToken("user", "password", "ROLE_ADMIN"));
+  }
 
   @Test
   void shouldFailValidationWhenEmailFormatIsInvalid() throws Exception {

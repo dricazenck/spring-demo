@@ -3,18 +3,32 @@ package com.wcc.springdemo.demo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Schema(description = "User entity representing a system user")
 public class User {
+
+  public enum Role {
+    ROLE_USER,
+    ROLE_ADMIN
+  }
 
   @Id
   @Schema(description = "Unique identifier for the user", example = "usr-123")
@@ -55,6 +69,20 @@ public class User {
       format = "email")
   private String email;
 
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @Schema(
+      description = "User's password (hashed)",
+      requiredMode = Schema.RequiredMode.REQUIRED,
+      example = "password123")
+  private String password;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+  @Enumerated(EnumType.STRING)
+  @Column(name = "role")
+  @Schema(description = "User's roles")
+  private Set<Role> roles = new HashSet<>();
+
   // Default constructor required by JPA
   public User() {}
 
@@ -71,6 +99,25 @@ public class User {
     this.lastName = lastName;
     this.fullName = fullName;
     this.email = email;
+    this.roles.add(Role.ROLE_USER); // Default role
+  }
+
+  public User(
+      String id,
+      String username,
+      String firstName,
+      String lastName,
+      String fullName,
+      String email,
+      String password) {
+    this.id = id;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.fullName = fullName;
+    this.email = email;
+    this.password = password;
+    this.roles.add(Role.ROLE_USER); // Default role
   }
 
   @JsonProperty("userId")
@@ -112,6 +159,34 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public Set<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
+  }
+
+  public void addRole(Role role) {
+    this.roles.add(role);
   }
 
   @Override

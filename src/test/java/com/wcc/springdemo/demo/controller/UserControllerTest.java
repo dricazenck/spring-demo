@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wcc.springdemo.demo.domain.User;
+import com.wcc.springdemo.demo.security.JwtTokenUtil;
 import com.wcc.springdemo.demo.service.UserService;
 import java.io.IOException;
 import java.util.List;
@@ -17,18 +18,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
   @Autowired private MockMvc mockMvc;
-
   @Autowired private ObjectMapper objectMapper;
 
   @MockBean private UserService userService;
+  @MockBean private JwtTokenUtil jwtTokenUtil;
 
   @Test
+  @WithMockUser(
+      username = "admin",
+      roles = {"ROLE_ADMIN"})
   public void testGetAllUsersOk() throws Exception {
     var users =
         List.of(

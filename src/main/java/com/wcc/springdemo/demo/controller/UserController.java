@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +25,21 @@ public class UserController {
 
   @GetMapping("/users")
   @Operation(summary = "API to retrieve all users")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> getAllUsers() {
     return service.getAll();
   }
 
   @PostMapping("/user")
   @Operation(summary = "API to create user")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public User createUser(@Validated @RequestBody User user) {
     return service.addUser(user);
   }
 
   @GetMapping("/user/{username}")
   @Operation(summary = "API to get user by username")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
     var user = service.getUserByUsername(username);
 

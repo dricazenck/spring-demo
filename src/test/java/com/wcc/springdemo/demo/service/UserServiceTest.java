@@ -1,6 +1,7 @@
 package com.wcc.springdemo.demo.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.wcc.springdemo.demo.domain.User;
 import com.wcc.springdemo.demo.repository.UserRepository;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 @Transactional
 class UserServiceTest {
 
@@ -39,7 +40,7 @@ class UserServiceTest {
     // Should have the two default users
     assertEquals(2, users.size());
     assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("adriana")));
-    assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("sonali")));
+    assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("maryjane")));
   }
 
   @Test
@@ -70,7 +71,7 @@ class UserServiceTest {
     assertTrue(users.stream().anyMatch(u -> u.getId().equals("test-id")));
 
     // Verify the count is at least 1 (our test user)
-    assertTrue(!users.isEmpty());
+    assertFalse(users.isEmpty());
   }
 
   @Test

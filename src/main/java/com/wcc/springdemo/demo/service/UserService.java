@@ -1,42 +1,107 @@
 package com.wcc.springdemo.demo.service;
 
 import com.wcc.springdemo.demo.domain.User;
+import com.wcc.springdemo.demo.domain.User.Role;
 import com.wcc.springdemo.demo.repository.UserRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 import jakarta.annotation.PostConstruct;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
+
+  @Autowired
+  public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+  }
+
+  @PostConstruct
+  public void init() {
+    // Only for testing
+    if (userRepository.count() == 0) {
+      User admin =
+          new User(
+              "1",
+              "adriana",
+              "Adriana",
+              "Zencke",
+              "Adriana Zencke",
+              "adriana@email.com",
+              passwordEncoder.encode("admin"));
+      admin.addRole(Role.ROLE_ADMIN);
+      userRepository.save(admin);
+
+      User user =
+          new User(
+              "2",
+              "maryjane",
+              "Mary",
+              "Jane",
+              "Mary Jane",
+              "maryjane@email.com",
+              passwordEncoder.encode("password"));
+      userRepository.save(user);
+    }
+  }
+
+  public List<User> getAll() {
+    return userRepository.findAll();
+  }
+
+  public User addUser(User user) {
+    return userRepository.save(user);
+  }
+
+  public User getUserById(String id) {
+    return userRepository.findById(id).orElse(null);
+  }
+
+  public User getUserByUsername(String username) {
+    return userRepository.findByUsernameIgnoreCase(username);
+  }
+
+  /**
+   * Register a new user with encoded password
+   *
+   * @param user the user to register
+   * @return the registered user
+   * @throws IllegalArgumentException if the username is already taken
+   */
+  public User registerUser(User user) {
+    if (userRepository.existsByUsernameIgnoreCase(user.getUsername())) {
+      throw new IllegalArgumentException("Username already taken: " + user.getUsername());
     }
 
-    @PostConstruct
-    public void init() {
-        // Only add default users if the repository is empty
-        if (userRepository.count() == 0) {
-            userRepository.save(new User("1", "adriana", "Adriana", "Zencke", "Adriana Zencke", "adriana@email.com"));
-            userRepository.save(new User("2", "sonali", "Sonali", "Goel", "Sonali Goel", "sonali@email.com"));
-        }
+    // Encode password
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+    // Ensure user has at least ROLE_USER
+    if (user.getRoles() == null || user.getRoles().isEmpty()) {
+      user.addRole(Role.ROLE_USER);
     }
 
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
+    return userRepository.save(user);
+  }
 
-    public User addUser(User user) {
-        return userRepository.save(user);
+  /**
+   * Check if the provided credentials are valid
+   *
+   * @param username the username
+   * @param password the raw password
+   * @return the authenticated user if credentials are valid, null otherwise
+   */
+  public User authenticate(String username, String password) {
+    User user = userRepository.findByUsernameIgnoreCase(username);
+    if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+      return user;
     }
-
-    public User getUserById(String id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsernameIgnoreCase(username);
-    }
+    return null;
+  }
 }

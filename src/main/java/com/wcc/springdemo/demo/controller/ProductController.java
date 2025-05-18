@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -29,6 +30,7 @@ public class ProductController {
   @GetMapping
   @Operation(summary = "API to retrieve all products")
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<Product>> getAllProducts() {
     return ResponseEntity.ok(service.getAllProducts());
   }
@@ -36,6 +38,7 @@ public class ProductController {
   @GetMapping("/{id}")
   @Operation(summary = "API to retrieve information about product by id")
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Product> getProductById(@PathVariable String id) {
     return ResponseEntity.ok(service.getProductById(id));
   }
@@ -43,6 +46,7 @@ public class ProductController {
   @PostMapping
   @Operation(summary = "API to create product")
   @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<Product> createProduct(@RequestBody Product product) {
     var productSaved = service.createProduct(product);
 
@@ -56,6 +60,7 @@ public class ProductController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<Product> updateProduct(
       @Validated @PathVariable String id, @RequestBody Product product) {
     return ResponseEntity.ok(
@@ -67,6 +72,7 @@ public class ProductController {
   @ApiResponse(responseCode = "200", description = "Product updated")
   @ApiResponse(responseCode = "404", description = "Product not found")
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<Product> patchProduct(
       @PathVariable String id, @RequestBody Product product) {
     return ResponseEntity.ok(
@@ -75,6 +81,7 @@ public class ProductController {
 
   @DeleteMapping("/{id}")
   @Operation(summary = "API to delete product")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
     boolean isDeleted = service.deleteProduct(id);
 
@@ -88,6 +95,7 @@ public class ProductController {
   @GetMapping("/by/{name}")
   @Operation(summary = "API to retrieve information about product by name")
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Product> getUserByUserName(@PathVariable String name) {
     return ResponseEntity.ok(service.getProductByName(name));
   }

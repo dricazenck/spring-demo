@@ -15,3 +15,8 @@ spring:
   h2:
     console:
       enabled: true
+
+# JWT Configuration for tests
+jwt:
+  secret: testSecretKey12345678901234567890
+  expiration: 3600000 # 1 hour in milliseconds
